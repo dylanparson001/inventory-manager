@@ -1,50 +1,44 @@
 class InventoryList {
+  inventory = [];
+
   createList() {
     const body = document.querySelector("body");
     const table = document.createElement("table");
     table.setAttribute("id", "inventory");
-    // will check for items that are already in list, I need to learn to hook up project to something like firebase first
-    body.append(table);
-  }
-  addToList() {
-    const table = document.querySelector("#inventory");
-    const itemInput = document.querySelector("#add-item");
-    const itemRow = document.createElement("tr");
-    const itemTitle = document.createElement("th");
-    const itemQuant = document.createElement("td");
-    const checkItem = document.querySelectorAll(`#${itemTitle.value}`); 
-    
-    itemRow.setAttribute("id", `${itemTitle.value}`)
-    
-    if (itemInput.value != " ") {
-      //Check current inventory if item already exists, don't add another row and update quantity
-      //This is a mess, brain too tired cant think straight
-      // Set current list an array as a property of the class, so the other methods can access that data and check it. 
-      // Checking everything all inside this one method is causing things to get oo complex, needs to be simplified
-      checkItem.forEach((item) => {
-        if (item === itemInput.value) {
-          console.log(checkItem.value);
-          const quant = document.querySelector(`#${itemTitle.value}-quant`);
-          const curr = document.querySelector(`#${itemTitle.value}`);
-
-          quant++;
-          curr.append(quant);
-          console.log('hello')
-        }
-      });
-      itemTitle.value = itemInput.value;
-
-      // console.log(typeof currentInventory);
-      itemQuant.setAttribute("id", `${itemTitle.value}-quant`);
-
-      itemTitle.textContent = itemTitle.value;
-      itemQuant.textContent = itemQuant.value;
+    // Load any previous items
+    this.inventory.forEach((item) => {
+      const itemRow = document.createElement("tr");
+      const itemTitle = document.createElement("th");
+      const itemQuant = document.createElement("td");
+      itemTitle.textContent = item[0];
+      itemQuant.textContent = item[1];
 
       itemRow.append(itemTitle, itemQuant);
-      table.appendChild(itemRow);
+      table.append(itemRow);
+    });
+
+    body.append(table);
+  }
+  reloadList() {
+    const table = document.querySelector("#inventory").remove() ;
+    this.createList();
+  }
+  addToList(newItem, newQuant) {
+    let itemExists = false;
+
+    if (this.inventory.length > 0) {
+      this.inventory.forEach((item) => {
+        if (newItem === item[0]) {
+          item[1] += parseInt(newQuant);
+          this.reloadList();
+          itemExists = true;
+        }
+      });
+    } 
+     if(itemExists === false) {
+      this.inventory.push([newItem, parseInt(newQuant)]);
+      this.reloadList()
     }
-    itemInput.value = " ";
   }
 }
-
 export { InventoryList };
