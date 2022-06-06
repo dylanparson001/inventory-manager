@@ -19,9 +19,11 @@ class AddField {
     // Set Text attributes
     addTextBox.setAttribute("type", "text");
     addTextBox.setAttribute("id", "add-item");
-    addTextBox.value = " "; // Default value
+    addTextBox.setAttribute("placeholder", "Item")
+
     quantity.setAttribute("type", "number");
     quantity.setAttribute("id", "add-quantity");
+    quantity.setAttribute("value", 1); // Default
     addForm.append(addTextBox, quantity);
 
     // Set Add Button attributes

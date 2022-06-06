@@ -1,3 +1,31 @@
-.hello{
-    color: red;
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    display: flex ;
+    flex-direction: column;
+    width: 50vw;
+    margin: auto;
+    align-items:center;
+}
+#add-form {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+}
+#inventory{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items:flex-start;
+    justify-content: space-between;
+}
+
+.item-rows{
+    width: 100%;
+    display: flex;
+    align-items:flex-end;
+    justify-content: space-between;
 }
