@@ -8,6 +8,7 @@ const inventory = new InventoryList();
 field.run();
 
 inventory.createList();
+inventory.editQuantities();
 
 document.querySelector("#add-form").addEventListener("submit", (e) => {
   e.preventDefault();

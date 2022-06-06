@@ -39,6 +39,7 @@ class InventoryList {
       const itemQuant = document.createElement("td");
 
       itemRow.classList.add("item-rows");
+      itemRow.setAttribute("id", `${item[0]}`)
       itemTitle.classList.add("item-titles");
       itemQuant.classList.add("item-quant");
       itemTitle.textContent = item[0];
@@ -49,6 +50,24 @@ class InventoryList {
     });
 
     body.append(table);
+  }
+  editQuantities(){
+    const quantities = document.querySelectorAll(".item-quant");
+    const input = document.createElement("input").setAttribute("type", "number");
+    quantities.forEach(quant=> {
+      quant.addEventListener("click", (e)=> {
+        // Get row from clicked event
+        const rowID = e.target.parentElement.id;
+        const editRow = document.getElementById(rowID);
+        const itemCurrent = editRow.firstChild;
+        const itemEdit = document.createElement("input").setAttribute("type", "text");
+        const editForm = document.createElement("form");
+        
+        editRow.replaceWith(editForm)
+        
+
+      })
+    })
   }
   reloadList() {
     const table = document.querySelector("#inventory").remove();

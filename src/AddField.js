@@ -33,6 +33,9 @@ class AddField {
 
     body.append(addForm);
   }
+  editItemForm(){
+    
+  }
 }
 
 export { AddField };
