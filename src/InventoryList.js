@@ -2,18 +2,16 @@ class InventoryList {
   inventory = [
     // Testing values
     ["HAMMER", 5],
-    ["DRILLS", 10],
   ];
   addToList(newItem, newQuant) {
     let itemExists = false;
     // Make sure a valid name and quantity have been selected
-    if (newItem != '' && newQuant != '') {
+    if (newItem != "" && newQuant != "") {
       // Checks for entries already listed
       if (this.inventory.length > 0) {
         this.inventory.forEach((item) => {
-          console.log(item[0]);
           if (newItem === item[0]) {
-            item[1] += parseInt(newQuant);
+            item[1] = parseInt(newQuant);
             this.reloadList();
             itemExists = true;
           }
@@ -21,11 +19,10 @@ class InventoryList {
       }
       if (itemExists === false) {
         this.inventory.push([newItem, parseInt(newQuant)]);
-        console.log(this.inventory)
         this.reloadList();
       }
     } else {
-      console.log('you dummy')
+      console.log("you dummy");
     }
   }
   createList() {
@@ -33,40 +30,78 @@ class InventoryList {
     const table = document.createElement("table");
     table.setAttribute("id", "inventory");
     // Load all items from current inventory
-    this.inventory.forEach((item) => {
+    this.inventory.forEach((item, index) => {
+      const editButton = document.createElement("button");
       const itemRow = document.createElement("tr");
       const itemTitle = document.createElement("th");
       const itemQuant = document.createElement("td");
+      const deleteBtn = document.createElement("button");
+
+      // Set Classes/ids
+      editButton.classList.add("item-edit");
+      editButton.textContent = "Edit";
+      editButton.addEventListener("click", (e) => {
+        this.editItem(e, table, itemRow, itemTitle, itemQuant);
+      });
 
       itemRow.classList.add("item-rows");
-      itemRow.setAttribute("id", `${item[0]}`)
+      itemRow.setAttribute("id", index);
+
       itemTitle.classList.add("item-titles");
-      itemQuant.classList.add("item-quant");
       itemTitle.textContent = item[0];
+
+      itemQuant.classList.add("item-quant");
       itemQuant.textContent = item[1];
 
-      itemRow.append(itemTitle, itemQuant);
+      deleteBtn.classList.add("item-delete");
+      deleteBtn.setAttribute("id", `${item[0]}-delete`);
+      deleteBtn.textContent = "Delete";
+
+      deleteBtn.addEventListener("click", (e) => {
+        this.deleteItem(e);
+      });
+
+      //append
+      itemRow.append(editButton, itemTitle, itemQuant, deleteBtn);
       table.append(itemRow);
     });
 
     body.append(table);
   }
-  editQuantities(){
-    const quantities = document.querySelectorAll(".item-quant");
-    const input = document.createElement("input").setAttribute("type", "number");
-    quantities.forEach(quant=> {
-      quant.addEventListener("click", (e)=> {
-        // Get row from clicked event
-        const rowID = e.target.parentElement.id;
-        const editRow = document.getElementById(rowID);
-        const itemCurrent = editRow.firstChild;
-        const itemEdit = document.createElement("input").setAttribute("type", "text");
-        const editForm = document.createElement("form");
-        
-        editRow.replaceWith(editForm)
-        
+  // Delete
+  deleteItem(e) {
+    const rowID = e.target.parentElement.id;
+    this.inventory.splice(rowID, 1);
+    this.reloadList();
+  }
+  editItem(e, table, itemRow, itemTitle, itemQuant) {
+    const index = e.target.parentElement.id;
 
-      })
+    const editRow = document.createElement("h2");
+    const form = document.createElement("form");
+    const editTitle = document.createElement("input");
+    const editQuant = document.createElement("input");
+    const editFinish = document.createElement("input");
+
+    editTitle.setAttribute("type", "text");
+    editTitle.setAttribute("id", "edit-item")
+    editTitle.setAttribute("value", `${this.inventory[index][0]}`);
+
+    editQuant.setAttribute("type", "number");
+    editQuant.setAttribute("id", "edit-quantity");
+    editQuant.setAttribute("value", `${this.inventory[index][1]}`);
+
+    editFinish.setAttribute("type", "submit");
+
+    form.append(editTitle, editQuant, editFinish);
+    editRow.append(form);
+    itemRow.replaceWith(editRow);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const itemInput = document.querySelector("#edit-item").value.toUpperCase().trim();
+      const itemQuant = document.querySelector("#edit-quantity").value;
+      this.addToList(itemInput, itemQuant);
     })
   }
   reloadList() {

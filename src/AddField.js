@@ -24,18 +24,24 @@ class AddField {
     quantity.setAttribute("type", "number");
     quantity.setAttribute("id", "add-quantity");
     quantity.setAttribute("value", 1); // Default
-    addForm.append(addTextBox, quantity);
-
+    
     // Set Add Button attributes
     addButton.setAttribute("type", "submit");
     addButton.setAttribute("id", "add-button");
-    addForm.append(addButton);
+    
+    addForm.append(addTextBox, quantity, addButton);
 
     body.append(addForm);
-  }
-  editItemForm(){
+
+    addForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const itemInput = document.querySelector("#add-item").value.toUpperCase().trim();
+      const itemQuant = document.querySelector("#add-quantity").value;
+      inventory.addToList(itemInput, itemQuant);
+    });
     
   }
+  
 }
 
 export { AddField };
