@@ -1,7 +1,6 @@
 class InventoryList {
   inventory = [
     // Testing values
-    ["HAMMER", 5],
   ];
   addToList(newItem, newQuant) {
     let itemExists = false;
@@ -41,7 +40,7 @@ class InventoryList {
       editButton.classList.add("item-edit");
       editButton.textContent = "Edit";
       editButton.addEventListener("click", (e) => {
-        this.editItem(e, table, itemRow, itemTitle, itemQuant);
+        this.editItem(e, itemRow);
       });
 
       itemRow.classList.add("item-rows");
@@ -74,7 +73,7 @@ class InventoryList {
     this.inventory.splice(rowID, 1);
     this.reloadList();
   }
-  editItem(e, table, itemRow, itemTitle, itemQuant) {
+  editItem(e, itemRow) {
     const index = e.target.parentElement.id;
 
     const editRow = document.createElement("h2");
@@ -83,8 +82,11 @@ class InventoryList {
     const editQuant = document.createElement("input");
     const editFinish = document.createElement("input");
 
+    editFinish.setAttribute("id", index);
+    editFinish.classList.add("edit-submit");
+
     editTitle.setAttribute("type", "text");
-    editTitle.setAttribute("id", "edit-item")
+    editTitle.setAttribute("id", "edit-item");
     editTitle.setAttribute("value", `${this.inventory[index][0]}`);
 
     editQuant.setAttribute("type", "number");
@@ -92,6 +94,8 @@ class InventoryList {
     editQuant.setAttribute("value", `${this.inventory[index][1]}`);
 
     editFinish.setAttribute("type", "submit");
+    // To get index when form is submitted
+    // editFinish.setAttribute("id", index)
 
     form.append(editTitle, editQuant, editFinish);
     editRow.append(form);
@@ -99,10 +103,17 @@ class InventoryList {
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      const itemInput = document.querySelector("#edit-item").value.toUpperCase().trim();
+      const index = document.querySelector(".edit-submit").id;
+      const itemInput = document
+        .querySelector("#edit-item")
+        .value.toUpperCase()
+        .trim();
       const itemQuant = document.querySelector("#edit-quantity").value;
+      // Change actual inventory data
+      this.inventory[index][0] = itemInput;
+      this.inventory[index][1] = itemQuant;
       this.addToList(itemInput, itemQuant);
-    })
+    });
   }
   reloadList() {
     const table = document.querySelector("#inventory").remove();
