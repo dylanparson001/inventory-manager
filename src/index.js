@@ -1,11 +1,11 @@
 import { AddField } from "./addField";
 import { InventoryList } from "./InventoryList";
-import {} from "./style.css";
+import "./style.css";
 
+const app = initializeApp(firebaseConfig);
 const field = new AddField();
 const inventory = new InventoryList();
 
 field.run();
 
 inventory.createList();
-

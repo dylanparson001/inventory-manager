@@ -1,6 +1,9 @@
 const path = require("path");
 
 module.exports = {
+  experiments: {
+    topLevelAwait: true,
+  },
   entry: "./src/index.js",
   output: {
     filename: "main.js",
@@ -20,6 +23,7 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
+      
     ],
   },
 };

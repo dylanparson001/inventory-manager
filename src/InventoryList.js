@@ -1,29 +1,9 @@
+// Import the functions you need from the SDKs you need
+
 class InventoryList {
   inventory = [
     // Testing values
   ];
-  addToList(newItem, newQuant) {
-    let itemExists = false;
-    // Make sure a valid name and quantity have been selected
-    if (newItem != "" && newQuant != "") {
-      // Checks for entries already listed
-      if (this.inventory.length > 0) {
-        this.inventory.forEach((item) => {
-          if (newItem === item[0]) {
-            item[1] = parseInt(newQuant);
-            this.reloadList();
-            itemExists = true;
-          }
-        });
-      }
-      if (itemExists === false) {
-        this.inventory.push([newItem, parseInt(newQuant)]);
-        this.reloadList();
-      }
-    } else {
-      console.log("you dummy");
-    }
-  }
   createList() {
     const body = document.querySelector("body");
     const table = document.createElement("table");
@@ -82,9 +62,6 @@ class InventoryList {
     const editQuant = document.createElement("input");
     const editFinish = document.createElement("input");
 
-    editFinish.setAttribute("id", index);
-    editFinish.classList.add("edit-submit");
-
     editTitle.setAttribute("type", "text");
     editTitle.setAttribute("id", "edit-item");
     editTitle.setAttribute("value", `${this.inventory[index][0]}`);
@@ -95,7 +72,8 @@ class InventoryList {
 
     editFinish.setAttribute("type", "submit");
     // To get index when form is submitted
-    // editFinish.setAttribute("id", index)
+    editFinish.setAttribute("id", index);
+    editFinish.classList.add("edit-submit");
 
     form.append(editTitle, editQuant, editFinish);
     editRow.append(form);
